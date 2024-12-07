@@ -1,0 +1,19 @@
+---
+teams:
+  Practices Team:
+    team_dashboards: 
+      Developer Practices Dashboard: 
+        Filename: DPROD_Report.pdf
+    jira_projects: issues.redhat.com/DPROD
+  Sandbox Team:
+    team_dashboards:
+      Red Hat Outcomes:
+        Filename: SANDBOX_Report.pdf
+    jira_projects: issues.redhat.com/SANDBOX    
+  Kubesaw Team:
+    team_dashboards:
+      Sprint Planning Accuracy:
+        Filename: KUBESAW_Report.pdf
+    jira_projects: issues.redhat.com/KUBESAW
+config:
+  Download_path: "downloaded_pdfs/"
