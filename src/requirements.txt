@@ -1,1 +1,2 @@
-# None, yet.
+pypdf~=5.1.0
+pillow~=11.0.0
