@@ -16,4 +16,4 @@ teams:
         Filename: KUBESAW_Report.pdf
     jira_projects: issues.redhat.com/KUBESAW
 config:
-  Download_path: "downloaded_pdfs/"
+  # There are no tool configuration options, currently.

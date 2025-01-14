@@ -1,3 +1,4 @@
+import pathlib
 import unittest
 
 from logilica_weekly_report.pdf_extract import get_pdf_objects
@@ -6,14 +7,14 @@ from logilica_weekly_report.pdf_extract import get_pdf_objects
 class MyTestCase(unittest.TestCase):
     def test_get_pdf_objects(self):
         config = {
-            "teams": {
-                "Mock Team": {
-                    "team_dashboards": {"Mock Team Dashboard": {"Filename": "test.pdf"}}
+            "Mock Team": {
+                "team_dashboards": {
+                    "Mock Team Dashboard": {"Filename": "sample_report.pdf"}
                 }
-            },
-            "config": {"Download_path": "tests/fixtures/"},
+            }
         }
-        result = get_pdf_objects(config)
+
+        result = get_pdf_objects(config, pathlib.Path(__file__).parent / "fixtures")
         self.assertEqual(
             3,
             len(result["Mock Team"]["Mock Team Dashboard"]["text"]),
