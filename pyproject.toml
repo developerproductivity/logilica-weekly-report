@@ -3,15 +3,15 @@ requires = ["setuptools>=75", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "logilica-weekly-report"
+name = "logilica-automation"
 version = "0.1.0"
-description = "A tool which extracts content from Logilica and includes it in the weekly report."
+description = "A tool which automates interactions with Logilica UI."
 readme = "README.md"
 authors = [{ name = "The Developer Practices Team", email = "developer-productivity@redhat.com" }]
 license = {"text" = "Apache-2.0"}
 
 [project.scripts]
-logilica-weekly-report = "logilica_weekly_report.__main__:cli"
+logilica = "logilica.__main__:cli"
 
 [tool.autoflake]
 exclude = ["build"]
@@ -34,12 +34,12 @@ wrap-summaries = 79
 
 [tool.isort]
 profile = "black"                               # black-compatible (e.g., trailing comma)
-known_first_party = ["logilica_weekly_report"]  # use separate section for project sources
+known_first_party = ["logilica"]                # use separate section for project sources
 force_sort_within_sections = true               # don't separate import vs from
 order_by_type = false                           # sort alphabetic regardless of case
 
-[tool.setuptools]
-packages = ["logilica_weekly_report"]
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.setuptools.dynamic]
 dependencies = { file = "requirements.txt" }

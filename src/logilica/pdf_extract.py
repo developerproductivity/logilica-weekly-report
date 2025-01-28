@@ -19,8 +19,8 @@ PAGE_FOOTER_HEIGHT = 18 * SCALE
 
 
 def get_pdf_objects(
-    teams_config: dict[str, dict[str, Any]],
-    download_path: pathlib.Path,
+    teams: dict[str, dict[str, Any]],
+    download_dir_path: pathlib.Path,
 ) -> dict[str, dict[str, bytes]]:
     """Extract content from the configured PDF files.
 
@@ -42,12 +42,12 @@ def get_pdf_objects(
       - the values are the contents of the Dashboards as PNG images
     """
     results = {}
-    for team, dashboards in teams_config.items():
+    for team, dashboards in teams.items():
         team_results = {}
         for dashboard, options in dashboards["team_dashboards"].items():
             logging.info("Extracting items from '%s' for %s", dashboard, team)
             pdf: pymupdf.Document
-            with pymupdf.open(download_path / options["Filename"]) as pdf:
+            with pymupdf.open(download_dir_path / options["Filename"]) as pdf:
                 team_results[dashboard] = get_report_image(pdf)
         results[team] = team_results
     return results
