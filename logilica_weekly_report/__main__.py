@@ -8,7 +8,11 @@ import yaml
 
 from logilica_weekly_report.download_pdfs import check_download_setup, download_pdfs
 from logilica_weekly_report.pdf_extract import get_pdf_objects
-from logilica_weekly_report.update_gdoc import update_gdoc
+from logilica_weekly_report.update_gdoc import (
+    generate_html,
+    get_google_credentials,
+    upload_doc,
+)
 
 # Default values for command options
 DEFAULT_CONFIG_FILE = "./weekly_report.yaml"
@@ -45,6 +49,14 @@ logging.basicConfig(format="[%(levelname)s] lwr: %(message)s", level=logging.WAR
     " (will be created if it doesn't exist; will be deleted if created)",
 )
 @click.option(
+    "--output",
+    "-O",
+    type=click.Choice(["gdoc", "html"], case_sensitive=False),
+    default="gdoc",
+    show_default=True,
+    help="Output format -- HTML to stdout or stored as a Google Doc on Google Drive",
+)
+@click.option(
     "--pwdebug",
     "--PWD",
     "-D",
@@ -64,6 +76,7 @@ def cli(
     context: click.Context,
     config_file_path: pathlib.Path,
     download_dir_path: pathlib.Path,
+    output: str,
     pwdebug: bool,
     verbose: int,
 ) -> None:
@@ -102,6 +115,9 @@ def cli(
         configuration = yaml.safe_load(yaml_file)
         logging.debug("configuration: %s", str(configuration))
 
+    if not configuration.get("config"):
+        configuration["config"] = {}
+
     remove_downloads = not download_dir_path.exists()
     logging.debug(
         "download directory %s", "does not exist" if remove_downloads else "exists"
@@ -110,10 +126,17 @@ def cli(
         os.mkdir(download_dir_path)
         logging.info("download directory, %s, created", download_dir_path)
 
+    # Get the credentials now to enable "failing early".
+    google_credentials = get_google_credentials(configuration["config"])
+
     try:
         download_pdfs(configuration["teams"], download_dir_path)
         pdf_items = get_pdf_objects(configuration["teams"], download_dir_path)
-        update_gdoc(pdf_items, configuration["config"])
+        doc = generate_html(pdf_items)
+        if output == "gdoc":
+            upload_doc(doc.getvalue(), google_credentials, configuration["config"])
+        else:
+            click.echo(doc.getvalue(), err=False)
     except Exception as err:
         click.echo(err, err=True)
         exit_status = 1
