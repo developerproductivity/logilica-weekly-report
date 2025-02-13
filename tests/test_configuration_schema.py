@@ -12,8 +12,8 @@ teams:
   My Awesome Team:
     team_dashboards:
       Team Productivity Dashboard:
-        Filename: Awesome.pdf
-    jira_projects: issues.redhat.com/TEST
+        filename: Awesome.pdf
+        url: some-string
 integrations:
   foobar-bot:
     connector: GitHub
@@ -34,8 +34,8 @@ teams:
   My Awesome Team:
     team_dashboards:
       Team Productivity Dashboard:
-        Filename: Awesome.pdf
-    jira_projects: issues.redhat.com/TEST
+        filename: Awesome.pdf
+        url: some-string
 integrations:
   foobar-public-bot:
     connector: GitHub
@@ -56,8 +56,8 @@ teams:
   My Awesome Team:
     team_dashboards:
       Team Productivity Dashboard:
-        Filename: 1
-    jira_projects: issues.redhat.com/TEST
+        filename: 1
+        not-url: some-string
 integrations:
   foobar-bot:
     connector: GitHub

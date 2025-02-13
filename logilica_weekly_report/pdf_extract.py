@@ -28,9 +28,9 @@ def get_pdf_objects(
         Practices Team:
           team_dashboards:
             Developer Practices Dashboard:
-              Filename: DPROD_Report.pdf
+              filename: DPROD_Report.pdf
             DPROD Dashboard 2:
-              Filename: DPROD_Report2.pdf
+              filename: DPROD_Report2.pdf
             ...
         ...
 
@@ -45,7 +45,7 @@ def get_pdf_objects(
         for dashboard, options in dashboards["team_dashboards"].items():
             logging.info("Extracting items from '%s' for %s", dashboard, team)
             pdf: pymupdf.Document
-            with pymupdf.open(download_dir_path / options["Filename"]) as pdf:
+            with pymupdf.open(download_dir_path / options["filename"]) as pdf:
                 team_results[dashboard] = get_report_image(pdf)
         results[team] = team_results
     return results

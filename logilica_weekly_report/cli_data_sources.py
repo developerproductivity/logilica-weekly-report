@@ -55,7 +55,7 @@ def data_sources(
             settings_page.sync_integrations(integrations=configuration["integrations"])
 
     except Exception as err:
-        click.echo(err, err=True)
+        click.echo(f"Unexpected exception, {type(err).__name__}: {err}", err=True)
         exit_status = 1
 
     context.exit(exit_status)

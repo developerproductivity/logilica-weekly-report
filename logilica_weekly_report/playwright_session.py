@@ -1,3 +1,5 @@
+from typing import Optional
+
 from playwright.sync_api import BrowserContext, Page, sync_playwright
 
 
@@ -7,8 +9,8 @@ class PlaywrightSession:
     def __init__(self, headless=True):
         self.headless = headless
         self.browser = None
-        self.context: BrowserContext = None
-        self.page: Page = None
+        self.context: Optional[BrowserContext] = None
+        self.page: Optional[Page] = None
 
     def __enter__(self):
         self.playwright = sync_playwright().start()
