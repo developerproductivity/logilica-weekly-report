@@ -1,6 +1,6 @@
 from collections import defaultdict
 import logging
-from typing import Any, Generator, Tuple, TypeAlias
+from typing import Any, Generator, Optional, Tuple, TypeAlias
 
 from playwright.sync_api import expect, Locator, Page
 
@@ -30,7 +30,7 @@ class SettingsPage:
         self.search_imported_repos_field = page.locator(
             "input[placeholder='Search repository...']"
         ).nth(0)
-        self.search_availaible_repos_field = page.locator(
+        self.search_available_repos_field = page.locator(
             "input[placeholder='Search repository...']"
         ).nth(1)
         self.add_public_repository_input = page.locator(
@@ -59,7 +59,7 @@ class SettingsPage:
         repositories: list[str],
     ) -> Generator[str, None, None]:
         """Waits for Integration / Settings / Available Repositories and
-        aftewards yields the list of repositories.
+        afterwards yields the list of repositories.
         """
         if repositories:
             logging.debug(
@@ -234,7 +234,7 @@ class SettingsPage:
         """Adds repository as membership repository."""
 
         logging.debug("⏳ Adding membership repository '%s'", repository_slug)
-        self.search_availaible_repos_field.fill(repository_slug)
+        self.search_available_repos_field.fill(repository_slug)
         locator = self.repository_control_button(repository_slug, order=1)
         if locator:
             locator.click()
@@ -243,17 +243,22 @@ class SettingsPage:
 
         return False
 
-    def repository_control_button(self, repository_slug: str, *, order=0) -> Locator:
+    def repository_control_button(
+        self, repository_slug: str, *, order=0
+    ) -> Optional[Locator]:
         """Finds repository control button.
 
-        Finds repository control button. Since there might be multiple buttons (up to 2), provides additional logic to pickup the right one.
-        The first button might be found in imported repositories, the other one in available repositories.
+        Finds repository control button. Since there might be multiple buttons
+        (up to 2), provides additional logic to pick up the right one.  The
+        first button might be found in imported repositories, the other one in
+        available repositories.
 
         Args:
           repository_slug:
             git slug that identifies the repository, e.g. org_name/repo_name
           order: optional
-            identifies what button is returned if 2 are found (by default the first one, indexed from 0)
+            identifies what button is returned if 2 are found (by default the
+            first one, indexed from 0)
 
         Returns:
           Control button.
@@ -287,8 +292,8 @@ class SettingsPage:
     def repository_slug_locator(self, slug: str) -> Locator:
         """Locator for repository slug element."""
 
-        # here we need to find the innnermost div element that exactly matches repository slug
-        # alternative option is to use an xpath selector that is more powerfull. Leaving it
+        # here we need to find the innermost div element that exactly matches repository slug
+        # alternative option is to use an xpath selector that is more powerful. Leaving it
         # in the code in case it will be needed because of DOM tree changes
         # self.page.locator(f"//div[normalize-space()='{slug}' and not(descendant::div)]")
         return self.page.get_by_text(text=slug, exact=True)

@@ -9,7 +9,7 @@ class MyTestCase(unittest.TestCase):
         config = {
             "Mock Team": {
                 "team_dashboards": {
-                    "Mock Team Dashboard": {"Filename": "sample_report.pdf"}
+                    "Mock Team Dashboard": {"filename": "sample_report.pdf"}
                 }
             }
         }

@@ -15,11 +15,17 @@ schema = {
                         "type": "object",
                         "additionalProperties": {
                             "type": "object",
-                            "properties": {"Filename": {"type": "string"}},
+                            "properties": {
+                                "filename": {"type": "string"},
+                                "url": {"type": "string"},
+                            },
+                            "required": ["filename", "url"],
+                            "additionalProperties": False,
                         },
                     },
-                    "jira_projects": {"type": "string"},
                 },
+                "required": ["team_dashboards"],
+                "additionalProperties": False,
             },
         },
         "integrations": {
@@ -31,14 +37,14 @@ schema = {
                     "public_repositories": {
                         "type": "array",
                         "items": {"type": "string"},
-                        "optional": True,
                     },
                     "membership_repositories": {
                         "type": "array",
                         "items": {"type": "string"},
-                        "optional": True,
                     },
                 },
+                "required": ["connector"],
+                "additionalProperties": False,
             },
         },
         "config": {
@@ -56,10 +62,13 @@ schema = {
                             "description": "Path to the Google OAuth token file",
                         },
                     },
+                    "additionalProperties": False,
                 },
             },
+            "additionalProperties": False,
         },
     },
+    "additionalProperties": False,
 }
 
 

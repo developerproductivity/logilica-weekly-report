@@ -69,13 +69,13 @@ def weekly_report(
       Team 1:
         team_dashboards:
           Board 1:
-            Filename: board1_report.pdf
-        jira_projects: issues.redhat.com/FOO
+            filename: board1_report.pdf
+            url: some-string
       Team 2:
         team_dashboards:
           Board 1:
-            Filename: board2_report.pdf
-        jira_projects: issues.redhat.com/BAR
+            filename: board2_report.pdf
+            url: some-string
         ...
     ...
     """
@@ -121,7 +121,7 @@ def weekly_report(
         else:
             click.echo(doc.getvalue(), err=False)
     except Exception as err:
-        click.echo(err, err=True)
+        click.echo(f"Unexpected exception, {type(err).__name__}: {err}", err=True)
         exit_status = 1
     finally:
         if remove_downloads:

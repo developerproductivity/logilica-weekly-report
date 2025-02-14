@@ -1,17 +1,17 @@
 ---
 teams:
   Practices Team:
-    team_dashboards: 
-      Developer Practices Dashboard: 
-        Filename: DPROD_Report.pdf
-    jira_projects: issues.redhat.com/DPROD
+    team_dashboards:
+      Developer Practices Dashboard:
+        filename: DPROD_Report.pdf
+        url: https://logilica.io/dashboard/023e570d-1398-458b-88e2-2c83ac6ad5c6?variables=W3sidmFyIjoiVGltZSIsInZhbCI6eyJkaW1lbnNpb24iOiJUaW1lIiwiZGF0ZVJhbmdlIjoiZnJvbSA5MCBkYXlzIGFnbyB0byBub3cifX1d&workstream=00000000b5cc5d88
   Sandbox Team:
     team_dashboards:
       Red Hat Outcomes:
-        Filename: SANDBOX_Report.pdf
-    jira_projects: issues.redhat.com/SANDBOX    
+        filename: SANDBOX_Report.pdf
+        url: https://logilica.io/dashboard/c2205e85-034e-4209-b218-fcc37df00dea?variables=W3sidmFyIjoiSmlyYVByb2plY3QubmFtZSIsInZhbCI6eyJtZW1iZXIiOiJKaXJhUHJvamVjdC5uYW1lIiwib3BlcmF0b3IiOiJlcXVhbHMiLCJ2YWx1ZXMiOlsiaXNzdWVzLnJlZGhhdC5jb20vU0FOREJPWCJdfX1d&workstream=00000000b5cc5d88
   Kubesaw Team:
     team_dashboards:
       Sprint Planning Accuracy:
-        Filename: KUBESAW_Report.pdf
-    jira_projects: issues.redhat.com/KUBESAW
+        filename: KUBESAW_Report.pdf
+        url: https://logilica.io/dashboard/f42ddeac-8520-4709-bd36-5713c8e299d3?variables=W3sidmFyIjoiSmlyYVByb2plY3QubmFtZSIsInZhbCI6eyJtZW1iZXIiOiJKaXJhUHJvamVjdC5uYW1lIiwib3BlcmF0b3IiOiJlcXVhbHMiLCJ2YWx1ZXMiOlsiaXNzdWVzLnJlZGhhdC5jb20vS1VCRVNBVyJdfX0seyJ2YXIiOiJUaW1lIiwidmFsIjp7ImRpbWVuc2lvbiI6IlRpbWUiLCJkYXRlUmFuZ2UiOiJmcm9tIDkwIGRheXMgYWdvIHRvIG5vdyJ9fV0%3D&workstream=00000000b5cc5d88

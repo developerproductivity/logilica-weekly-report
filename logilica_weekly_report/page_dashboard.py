@@ -4,12 +4,8 @@ from typing import Any
 
 from playwright.sync_api import Page
 
-from logilica_weekly_report.page_navigation import NavigationPanel
-
 
 class DashboardPage:
-    TIMEOUT = 3000
-
     def __init__(self, page: Page):
         self.page = page
         self.export_pdf_button = page.get_by_role("button", name="Export PDF")
@@ -31,7 +27,7 @@ class DashboardPage:
         teams: dict[str, Any],
         base_dir_path: pathlib.Path,
         *,
-        menu_dropdown="Custom Reports"
+        menu_dropdown="Custom Reports",
     ) -> None:
         for team, dashboards in teams.items():
             for dashboard, options in dashboards["team_dashboards"].items():
@@ -41,10 +37,9 @@ class DashboardPage:
                     dashboard,
                     team,
                 )
-                NavigationPanel(self.page).navigate(
-                    link_name=dashboard, menu_dropdown=menu_dropdown
-                )
-                self.download_dashboard_to(path=base_dir_path / options["Filename"])
+                self.page.goto(url=options["url"])
+                self.download_dashboard_to(path=base_dir_path / options["filename"])
+
             logging.info(
                 "Downloaded %d dashboard%s for '%s' team",
                 len(dashboards["team_dashboards"]),
