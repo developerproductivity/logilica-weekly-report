@@ -1,6 +1,6 @@
 import logging
 import os
-import pathlib
+from pathlib import Path
 import shutil
 
 import click
@@ -19,14 +19,23 @@ from logilica_weekly_report.update_gdoc import (
 DEFAULT_DOWNLOADS_DIR = "./lwr_downloaded_pdfs"
 
 
+def output_images(
+    pdf_items: dict[str, dict[str, bytes]], output_dir_path: Path
+) -> None:
+    for team, dashboards in pdf_items.items():
+        for dashboard, rawimage in dashboards.items():
+            imagepath = output_dir_path / f"{team}-{dashboard}.png"
+            imagepath = imagepath.with_name(imagepath.name.lower().replace(" ", "-"))
+            logging.info("storing dashboard '%s' at '%s'", dashboard, imagepath)
+            imagepath.write_bytes(rawimage)
+
+
 @click.command()
 @click.option(
     "--downloads",
     "-d",
     "download_dir_path",
-    type=click.Path(
-        writable=True, file_okay=False, path_type=pathlib.Path, resolve_path=True
-    ),
+    type=click.Path(writable=True, file_okay=False, path_type=Path, resolve_path=True),
     default=DEFAULT_DOWNLOADS_DIR,
     show_default=True,
     help="Path to a directory to receive downloaded files"
@@ -44,14 +53,18 @@ DEFAULT_DOWNLOADS_DIR = "./lwr_downloaded_pdfs"
 @click.option(
     "--output",
     "-O",
-    type=click.Choice(["gdoc", "html"], case_sensitive=False),
+    type=click.Choice(["gdoc", "html", "images-only"], case_sensitive=False),
     default="gdoc",
     show_default=True,
-    help="Output format -- HTML to stdout or stored as a Google Doc on Google Drive",
+    help="Output format -- HTML to stdout or stored as a Google Doc on"
+    " Google Drive or only dashboard images as PNGs",
 )
 @click.pass_context
 def weekly_report(
-    context: click.Context, download_dir_path: pathlib.Path, source: str, output: str
+    context: click.Context,
+    download_dir_path: Path,
+    source: str,
+    output: str,
 ) -> None:
     """Downloads and processes weekly report for teams specified in the
     configuration.
@@ -83,6 +96,7 @@ def weekly_report(
     configuration = context.obj["configuration"]
     config = configuration.get("config", {})
     logilica_credentials = context.obj["logilica_credentials"]
+    output_dir_path = context.obj["output_dir_path"]
 
     # If needed, get the credentials now to enable "failing early".
     google_credentials = get_google_credentials(config) if output == "gdoc" else None
@@ -111,12 +125,15 @@ def weekly_report(
         pdf_items = get_pdf_objects(
             teams=configuration["teams"], download_dir_path=download_dir_path
         )
-        doc = generate_html(pdf_items)
-        if output == "gdoc":
-            url = upload_doc(doc.getvalue(), google_credentials, config)
-            click.echo(f"Report uploaded to {url}")
+        if output == "images-only":
+            output_images(pdf_items=pdf_items, output_dir_path=output_dir_path)
         else:
-            click.echo(doc.getvalue(), err=False)
+            doc = generate_html(pdf_items)
+            if output == "gdoc":
+                url = upload_doc(doc.getvalue(), google_credentials, config)
+                click.echo(f"Report uploaded to {url}")
+            else:
+                click.echo(doc.getvalue(), err=False)
     except Exception as err:
         click.echo(f"Unexpected exception, {type(err).__name__}: {err}", err=True)
         exit_status = 1

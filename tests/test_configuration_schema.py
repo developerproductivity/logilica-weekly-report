@@ -15,7 +15,7 @@ teams:
   My Awesome Team:
     team_dashboards:
       Team Productivity Dashboard:
-        filename: Awesome.pdf
+        filename: sample_report.pdf
         url: some-string
 integrations:
   foobar-bot:

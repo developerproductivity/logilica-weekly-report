@@ -1,6 +1,11 @@
 from collections import defaultdict
 import logging
-from typing import Any, Generator, Optional, Tuple, TypeAlias
+from typing import Any, Generator, Optional, Tuple
+
+try:
+    from typing import TypeAlias  # Python 3.10+
+except ImportError:
+    from typing_extensions import TypeAlias  # Python 3.9
 
 from playwright.sync_api import expect, Locator, Page
 

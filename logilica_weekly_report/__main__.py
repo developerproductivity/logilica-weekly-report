@@ -13,6 +13,7 @@ from logilica_weekly_report.configuration_schema import validate_configuration
 
 # Default values for command options
 DEFAULT_CONFIG_FILE = "./weekly_report.yaml"
+DEFAULT_OUTPUT_DIR = "./output"
 
 # Set up logging and create the Bottle application
 logging.basicConfig(format="[%(levelname)s] lwr: %(message)s", level=logging.WARNING)
@@ -60,6 +61,17 @@ logging.basicConfig(format="[%(levelname)s] lwr: %(message)s", level=logging.WAR
     help="Path to configuration file",
 )
 @click.option(
+    "--output-dir",
+    "-o",
+    "output_dir_path",
+    type=click.Path(
+        writable=True, file_okay=False, path_type=pathlib.Path, resolve_path=True
+    ),
+    default=DEFAULT_OUTPUT_DIR,
+    show_default=True,
+    help="Path to a directory to store output if image-only output is selected",
+)
+@click.option(
     "--pwdebug",
     "--PWD",
     "-D",
@@ -79,6 +91,7 @@ def cli(
     context: click.Context,
     config_file_path: pathlib.Path,
     domain: str,
+    output_dir_path: str,
     username: str,
     password: str,
     pwdebug: bool,
@@ -120,6 +133,16 @@ def cli(
         "password": password,
         "domain": domain,
     }
+
+    output_dir_missing = not output_dir_path.exists()
+    logging.debug(
+        "output directory %s",
+        "does not exist" if output_dir_missing else "exists",
+    )
+    if output_dir_missing:
+        os.mkdir(output_dir_path)
+
+    context.obj["output_dir_path"] = output_dir_path
 
 
 command: Command

@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 
 from playwright.sync_api import Page, TimeoutError
 
@@ -11,7 +12,7 @@ class NavigationPanel:
     def __init__(self, page: Page):
         self.page = page
 
-    def navigate(self, *, menu_dropdown: str | None, link_name: str) -> None:
+    def navigate(self, *, menu_dropdown: Optional[str], link_name: str) -> None:
         """Opens a link in navigation panel.
 
         Opens a link, opens a dropdown first if provided.
